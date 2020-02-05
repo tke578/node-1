@@ -14,6 +14,7 @@ services:
       - ./.env
   frontend:
     build:
+      context: ./frontend
       dockerfile: Dockerfile.production
     container_name: frontend
     ports:
