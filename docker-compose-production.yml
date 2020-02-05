@@ -1,23 +1,27 @@
 version: '3'
 services:
   backend:
-    build: ./backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.production
     container_name: backend
     ports: 
       - 8080:8080
     volumes:
       - ./backend/app:/app
-    stdin_open: true
-    tty: true
+    command: bash -c "supervisord -n"
     env_file:
       - ./.env
   frontend:
-    build: ./frontend
+    build:
+      dockerfile: Dockerfile.production
     container_name: frontend
     ports:
       - 3000:3000
     volumes:
-      - ./frontend/app
-      - ./frontend/app/node_modules
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=production
     depends_on:
       - 'backend'

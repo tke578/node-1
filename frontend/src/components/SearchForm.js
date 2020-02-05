@@ -50,24 +50,23 @@ function SearchForm(){
 			setSearchQuery({...searchQuery, post_descripton: string})
 		}
 
-		// debugger
 	}
 
 
-	// useEffect(() =>{
-	// 	// setNewTodo(list)
-	// 	axios.get("https://financialmodelingprep.com/api/v3/financials/income-statement/sfix")
-	// 		.then(response => {
-	// 			console.log(response);
-	// 		})
-	// 		.catch(error => {
-	// 			// setErroronApi(true)
+	useEffect(() =>{
+		// setNewTodo(list)
+		axios.get("http://localhost:8080/todays_posts")
+			.then(response => {
+				console.log(response);
+			})
+			.catch(error => {
+				// setErroronApi(true)
 				
-	// 			console.log(error);
-	// 		});
+				console.log(error);
+			});
 
-	// 	// console.log("This is new todo "+ newTodo);
-	// }, []);
+		// console.log("This is new todo "+ newTodo);
+	}, [searchQuery]);
 	// const list = options;
 	// const postTypeOptions = Object.keys(postTypeList).map(key => <option key={key} value={key}>{postTypeList[key]}</option>)
 

@@ -7,6 +7,8 @@ RUN echo "deb http://cdn-aws.deb.debian.org/debian  stable main\ndeb http://cdn-
 RUN apt-get update && apt-get install -y \
 apt-utils \
 python3-pip \
+nginx \
+supervisor \
 git \
 vim \
 curl \
@@ -19,15 +21,21 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 COPY requirements.txt /
 
 COPY ./app /app
-
-
+COPY /config /config
 
 RUN pip install --upgrade pip
 RUN pip3 install -r requirements.txt
 
 
+# setup config
+COPY config/nginx.conf /etc/nginx/sites-enabled/
+COPY /config/app.ini /config/
+COPY /config/supervisor.conf /etc/supervisor/conf.d/
 
-EXPOSE 80
+RUN echo "\ndaemon off;" >> /etc/nginx/nginx.conf
+RUN rm /etc/nginx/sites-enabled/default
 
-CMD [ "python", "/app/app.py"]
 
+EXPOSE 8080
+
+CMD ["supervisord", "-n"]

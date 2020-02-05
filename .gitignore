@@ -1,4 +1,5 @@
 compose/local
+compose/production/.env
 backend/app/__pycache__
 frontend/node_modules
 
