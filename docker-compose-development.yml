@@ -9,6 +9,8 @@ services:
       - 8080:8080
     volumes:
       - ./backend/app:/app
+    stdin_open: true
+    tty: true
     command: bash -c "python /app/app.py"
     env_file:
       - ./.env

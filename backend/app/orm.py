@@ -9,10 +9,9 @@ VIEW_TYPES = {
 	},
 	"CLIENT": {
 		"_id": 0,
-		"post_id": 0,
-		"post_status": 0,
-		"updated_post_time": 0,
-		"uuid": 0
+		"uuid": 0,
+		"created_at": 0,
+		"updated_at": 0
 	}
 }
 

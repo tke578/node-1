@@ -7,17 +7,20 @@ import PostType from "../hooks/PostType"
 import PostDate from "../hooks/PostDate"
 import PostString from "../hooks/PostString"
 import Spinner from "react-bootstrap/Spinner"
+import ListTable from "../components/ListTable"
 
 function SearchForm(){
 	const [searchQuery, setSearchQuery] = useState({});
+	const [response, setResponse] = useState(null);
 	// const [errorOnApi, setErroronApi] = useState(false);
-	// const BASE_URI = "http://localhost:8080";
 
 	useEffect(()=>{
 		if (Object.keys(searchQuery).length === 0){
 			return;
 		}
-		// debugger;	
+		// debuggerr;
+		console.log("This is the response")
+		console.log(response);
 		console.log("This is search searchQuery " + JSON.stringify(searchQuery));
 		
 		// debugger;
@@ -47,6 +50,7 @@ function SearchForm(){
 
 	function updatePostString(string){
 		if (string.length > 0){
+
 			setSearchQuery({...searchQuery, post_descripton: string})
 		}
 
@@ -57,6 +61,7 @@ function SearchForm(){
 		// setNewTodo(list)
 		axios.get("http://localhost:8080/todays_posts")
 			.then(response => {
+				setResponse(response.data);
 				console.log(response);
 			})
 			.catch(error => {
@@ -66,7 +71,7 @@ function SearchForm(){
 			});
 
 		// console.log("This is new todo "+ newTodo);
-	}, [searchQuery]);
+	}, []);
 	// const list = options;
 	// const postTypeOptions = Object.keys(postTypeList).map(key => <option key={key} value={key}>{postTypeList[key]}</option>)
 
@@ -81,6 +86,8 @@ function SearchForm(){
 				
 				</form>
 			</Jumbotron>
+			{response && (<ListTable collection={response}></ListTable>)}
+			
 			<Spinner animation="grow" />
 		</div>
 	);
