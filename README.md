@@ -6,6 +6,6 @@
 
 `docker-compose -f docker-compose-development up --build`
 
-### Produciton
+### Production
 
 `docker-compose -f docker-compose-production up --build`
