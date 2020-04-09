@@ -1,41 +1,54 @@
 import React from "react";
 import Table from "react-bootstrap/Table";
+import Button from "react-bootstrap/Button"
+import OverlayTrigger from "react-bootstrap/OverlayTrigger"
+import Popover from "react-bootstrap/Popover"
+
+
+const CustomPopover = (data, url) =>{
+	return(
+		<Popover id="popover-basic">
+	    <Popover.Title as="h3">Description/ <a target="_blank" href={url}>Link</a></Popover.Title>
+	    <Popover.Content>{data}</Popover.Content>
+	  	</Popover>
+	)
+};
+
 
 function ListTable({collection}){
-	const collectionItems = collection.map((link) =>
-        <li key={link.post_id}>{link.post_id}</li> 
+	const collectionItems = collection.map((posting, index) =>
+		<tr key={index} id={posting.post_id}>
+			<td>{index+=1}</td>
+			<td>{posting.title}</td>
+			<td>{posting.address}</td>
+			<td>{posting.region}</td>
+			<td>{posting.price}</td>
+			<td>
+				<OverlayTrigger trigger="focus" placement="right" overlay={CustomPopover(posting.description, posting.url)}>
+    				<Button variant="success">Click</Button>
+  				</OverlayTrigger>
+  			</td>
+			<td>{posting.post_status}</td>
+		</tr>
     );
+    
 	return(
 		<div>
-		{collectionItems}
+			
 			<Table striped bordered hover>
 			  <thead>
 			    <tr>
-
 			      <th>#</th>
-			      <th>First Name</th>
-			      <th>Last Name</th>
-			      <th>Username</th>
+			      <th>Title</th>
+			      <th>Possible Address</th>
+			      <th>District/Area</th>
+			      <th>Price</th>
+			      <th>Description</th>
+			      <th>Status</th>
 			    </tr>
 			  </thead>
 			  <tbody>
-			    <tr>
-			      <td>1</td>
-			      <td>Mark</td>
-			      <td>Otto</td>
-			      <td>@mdo</td>
-			    </tr>
-			    <tr>
-			      <td>2</td>
-			      <td>Jacob</td>
-			      <td>Thornton</td>
-			      <td>@fat</td>
-			    </tr>
-			    <tr>
-			      <td>3</td>
-			      <td colSpan="2">Larry the Bird</td>
-			      <td>@twitter</td>
-			    </tr>
+			    {collectionItems}
 			  </tbody>
 			</Table>
 		</div>

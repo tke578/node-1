@@ -86,9 +86,12 @@ function SearchForm(){
 				
 				</form>
 			</Jumbotron>
-			{response && (<ListTable collection={response}></ListTable>)}
+			{response
+				? <ListTable collection={response}></ListTable>
+				: <Spinner animation="grow" size="lg"/>
+
+			}	
 			
-			<Spinner animation="grow" />
 		</div>
 	);
 }
