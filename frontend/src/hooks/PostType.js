@@ -1,8 +1,31 @@
-import React from "react";
-
+import React, {useState, useEffect} from "react";
+import axios from 'axios';
 
 function PostType({postType}){
 	const postTypeList = {"": "Choose a value type", "valid": "Valid", "invalid": "In-valid", "expired": "Expired"}
+	const [statuses, setStatuses] = useState(null);
+	useEffect(() =>{
+		// setNewTodo(list)
+		axios.get("http://localhost:8080/post_status_types")
+			.then(response => {
+				let statusObj = {"": "Chose a status type"};
+				for (const status of response.data.statuses){
+					statusObj[status] = status;
+				}
+				setStatuses(statusObj)
+				// setResponse(response.data);
+				console.log(response);
+			})
+			.catch(error => {
+				// setErroronApi(true)
+				
+				console.log(error);
+			});
+
+		// console.log("This is new todo "+ newTodo);
+	}, []);
+	
+	// postStatuses();
 	// OLD
 	// const [postTypeList, setPostTypeList] = useState({"": "Choose a value type", "valid": "Valid", "invalid": "In-valid", "expired": "Expired"});
 	// const [selectedOptions, setSeletedOptions] = useState([]);
@@ -40,8 +63,9 @@ function PostType({postType}){
 							
 						}
 					}>
-					{
-					 	Object.keys(postTypeList).map(key => <option key={key} value={key}>{postTypeList[key]}</option>)
+					{statuses 
+						? Object.keys(statuses).map(key => <option key={key} value={key}>{statuses[key]}</option>)
+						: 'blah'
 					}
 				</select>
 			</div>

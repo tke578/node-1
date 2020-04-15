@@ -8,7 +8,7 @@ import Popover from "react-bootstrap/Popover"
 const CustomPopover = (data, url) =>{
 	return(
 		<Popover id="popover-basic">
-	    <Popover.Title as="h3">Description/ <a target="_blank" href={url}>Link</a></Popover.Title>
+	    <Popover.Title as="h3">Description/ <a target="_blank" rel="noopener noreferrer" href={url}>Link</a></Popover.Title>
 	    <Popover.Content>{data}</Popover.Content>
 	  	</Popover>
 	)
@@ -34,7 +34,6 @@ function ListTable({collection}){
     
 	return(
 		<div>
-			
 			<Table striped bordered hover>
 			  <thead>
 			    <tr>
@@ -52,6 +51,8 @@ function ListTable({collection}){
 			  </tbody>
 			</Table>
 		</div>
+		
+		
 	)
 }
 

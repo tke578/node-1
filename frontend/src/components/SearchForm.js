@@ -8,10 +8,12 @@ import PostDate from "../hooks/PostDate"
 import PostString from "../hooks/PostString"
 import Spinner from "react-bootstrap/Spinner"
 import ListTable from "../components/ListTable"
+import Button from "react-bootstrap/Button"
 
 function SearchForm(){
 	const [searchQuery, setSearchQuery] = useState({});
 	const [response, setResponse] = useState(null);
+	const [lastDocID, setLastDocID] = useState(null);
 	// const [errorOnApi, setErroronApi] = useState(false);
 
 	useEffect(()=>{
@@ -22,6 +24,7 @@ function SearchForm(){
 		console.log("This is the response")
 		console.log(response);
 		console.log("This is search searchQuery " + JSON.stringify(searchQuery));
+		console.log('last id '+ lastDocID)
 		
 		// debugger;
     	
@@ -56,13 +59,24 @@ function SearchForm(){
 
 	}
 
+	function getLastDocID(response){
+		if(response){
+			setLastDocID(response[response.length-1]["_id"])
+		}
+	}
+
+	function fetchDocs(){
+		console.log(lastDocID);
+	}
+
 
 	useEffect(() =>{
 		// setNewTodo(list)
-		axios.get("http://localhost:8080/todays_posts")
+		axios.get("http://localhost:8080/search")
 			.then(response => {
-				setResponse(response.data);
+				setResponse(response.data.data);
 				console.log(response);
+				getLastDocID(response.data.data)
 			})
 			.catch(error => {
 				// setErroronApi(true)
@@ -87,7 +101,12 @@ function SearchForm(){
 				</form>
 			</Jumbotron>
 			{response
-				? <ListTable collection={response}></ListTable>
+				? 
+				[
+					<ListTable key="1"collection={response}></ListTable>,
+					<Button key="2" onClick={fetchDocs}variant="success">View more</Button>
+				]
+				
 				: <Spinner animation="grow" size="lg"/>
 
 			}	

@@ -8,7 +8,6 @@ VIEW_TYPES = {
 		"show_all": 0
 	},
 	"CLIENT": {
-		"_id": 0,
 		"uuid": 0,
 		"created_at": 0,
 		"updated_at": 0

@@ -3,7 +3,6 @@ import traceback
 import errors
 from bson import ObjectId
 
-
 def get_object_id(obj):
 	if type(obj["_id"]) == ObjectId:
 		return str(obj["_id"])
@@ -25,4 +24,4 @@ class Errors(object):
         else:
             if response.status_code == 408: 
             	raise self.error_logic[response.status_code](response.text)
-            raise Exception(response.text)
+        raise Exception(response.text)
