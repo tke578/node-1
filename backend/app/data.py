@@ -3,6 +3,7 @@ from orm import Posts
 from datetime import datetime
 from errors import BadRequest
 from bson import ObjectId
+import json
 
 
 def todays_posts():
@@ -23,7 +24,7 @@ def all_status_types():
 def query(params):
 	query_obj = dict()
 	if bool(params.get('post_status', '')):
-		query_obj["post_status"] = params.get('post_status')
+		query_obj["post_status"] =  {"$in": json.loads(params.get('post_status')) }
 	if bool(params.get('post_time', '')):
 		query_obj["post_time"] = params.get('post_time')
 	if bool(params.get('description', '')):

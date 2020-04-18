@@ -3,6 +3,7 @@ import axios from 'axios';
 
 import Jumbotron from "react-bootstrap/Jumbotron";
 import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 import PostType from "../hooks/PostType"
 import PostDate from "../hooks/PostDate"
 import PostString from "../hooks/PostString"
@@ -12,7 +13,7 @@ import Button from "react-bootstrap/Button"
 
 function SearchForm(){
 	const [searchQuery, setSearchQuery] = useState({});
-	const [response, setResponse] = useState(null);
+	const [collection, setCollection] = useState(null);
 	const [lastDocID, setLastDocID] = useState(null);
 	// const [errorOnApi, setErroronApi] = useState(false);
 
@@ -21,10 +22,10 @@ function SearchForm(){
 			return;
 		}
 		// debuggerr;
-		console.log("This is the response")
-		console.log(response);
-		console.log("This is search searchQuery " + JSON.stringify(searchQuery));
-		console.log('last id '+ lastDocID)
+		// console.log("This is the response")
+		// console.log(collection);
+		// console.log("This is search searchQuery " + JSON.stringify(searchQuery));
+		// console.log('last id '+ lastDocID)
 		
 		// debugger;
     	
@@ -59,13 +60,55 @@ function SearchForm(){
 
 	}
 
-	function getLastDocID(response){
-		if(response){
-			setLastDocID(response[response.length-1]["_id"])
+	function getLastDocID(collection){
+		if(collection){
+			setLastDocID(collection[collection.length-1]["_id"])
 		}
 	}
 
-	function fetchDocs(){
+	function submitForm(){
+		if(Object.keys(searchQuery).length > 0){
+			axios.get("http://localhost:8080/search",{
+				params: {
+					post_status: JSON.stringify(searchQuery.post_types)	
+				} 
+				})
+				.then(response => {
+					// debugger;
+					setCollection(response.data.data);
+					console.log(response);
+					getLastDocID(response.data.data)
+				})
+				.catch(error => {
+					// setErroronApi(true)
+					
+					console.log(error);
+				});
+		}
+		
+	}
+
+	function fetchMore(){
+		axios.get("http://localhost:8080/search", {
+			params: {
+					last_doc_id: lastDocID,
+					post_status: JSON.stringify(searchQuery.post_types)
+				}
+			})
+			.then(response => {
+				setCollection(collection.concat(response.data.data));
+
+
+				// setResponse(response.data.data);
+				console.log(response);
+				getLastDocID(response.data.data)
+			})
+			.catch(error => {
+				// setErroronApi(true)
+				
+				console.log(error);
+			});
+		// setCollection(collection.concat(collection));
 		console.log(lastDocID);
 	}
 
@@ -74,7 +117,7 @@ function SearchForm(){
 		// setNewTodo(list)
 		axios.get("http://localhost:8080/search")
 			.then(response => {
-				setResponse(response.data.data);
+				setCollection(response.data.data);
 				console.log(response);
 				getLastDocID(response.data.data)
 			})
@@ -97,14 +140,21 @@ function SearchForm(){
 					<PostType postType={updatePostType}></PostType>
 					<PostDate postDate={updatePostDate}></PostDate>
 					<PostString postString={updatePostString}></PostString>
-				
+					
 				</form>
+				<Row>
+					<Col md={{ span: 4, offset: 10 }}>
+						<Button onClick={submitForm}variant="info">Search</Button>
+					</Col>
+					
+				</Row>
+				
 			</Jumbotron>
-			{response
+			{collection
 				? 
 				[
-					<ListTable key="1"collection={response}></ListTable>,
-					<Button key="2" onClick={fetchDocs}variant="success">View more</Button>
+					<ListTable key="1"collection={collection}></ListTable>,
+					<Button key="2" onClick={fetchMore}variant="success">View more</Button>
 				]
 				
 				: <Spinner animation="grow" size="lg"/>
