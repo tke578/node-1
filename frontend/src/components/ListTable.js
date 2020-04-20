@@ -3,7 +3,8 @@ import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button"
 import OverlayTrigger from "react-bootstrap/OverlayTrigger"
 import Popover from "react-bootstrap/Popover"
-
+import Moment from "react-moment";
+import moment from "moment"
 
 const CustomPopover = (data, url) =>{
 	return(
@@ -15,11 +16,18 @@ const CustomPopover = (data, url) =>{
 };
 
 
+function toDate(date_string){
+	debugger;
+}
+
 function ListTable({collection}){
 	const collectionItems = collection.map((posting, index) =>
 		<tr key={index} id={posting.post_id}>
 			<td>{index+=1}</td>
 			<td>{posting.title}</td>
+			<td>
+				{ moment(posting.post_time).format('MM-DD-YYYY HH:MM')}
+			</td>
 			<td>{posting.address}</td>
 			<td>{posting.region}</td>
 			<td>{posting.price}</td>
@@ -39,8 +47,9 @@ function ListTable({collection}){
 			    <tr>
 			      <th>#</th>
 			      <th>Title</th>
-			      <th>Possible Address</th>
-			      <th>District/Area</th>
+			      <th>Posted Date</th>
+			      <th>District</th>
+			      <th>City</th>
 			      <th>Price</th>
 			      <th>Description</th>
 			      <th>Status</th>

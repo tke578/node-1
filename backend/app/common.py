@@ -2,12 +2,18 @@ import os
 import traceback
 import errors
 from bson import ObjectId
+from datetime import datetime
 
 def get_object_id(obj):
 	if type(obj["_id"]) == ObjectId:
 		return str(obj["_id"])
 	return obj["_id"]["$oid"]
 
+def parse_date(date=None, date_format=None):
+    try:
+        return datetime.strptime(date, date_format)
+    except Exception as e:
+        raise errors.BadRequest('Not a valid date')
 
 class Errors(object):
     def __init__(self):

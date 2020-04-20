@@ -1,4 +1,4 @@
-from common import get_object_id
+from common import get_object_id, parse_date
 from orm import Posts
 from datetime import datetime
 from errors import BadRequest
@@ -26,9 +26,13 @@ def query(params):
 	if bool(params.get('post_status', '')):
 		query_obj["post_status"] =  {"$in": json.loads(params.get('post_status')) }
 	if bool(params.get('post_time', '')):
-		query_obj["post_time"] = params.get('post_time')
+		print(params["post_time"])
+		date = parse_date(date=params['post_time'], date_format="%m-%d-%Y")
+		start_date = date.strftime("%Y-%m-%d") + ' 00:00'
+		end_date = date.strftime("%Y-%m-%d") + ' 23:59'
+		query_obj["post_time"] = { "$gt": start_date, "$lt": end_date}
 	if bool(params.get('description', '')):
-		pass
+		query_obj["description"] = 	{'$regex': params.get('description')}
 	if bool(params.get('last_doc_id', '')):
 		query_obj["_id"] = { "$lt": ObjectId(params["last_doc_id"]) }
 	mongo_client = Posts()

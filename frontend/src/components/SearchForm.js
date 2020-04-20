@@ -1,5 +1,7 @@
 import React, {useState, useEffect} from "react";
 import axios from 'axios';
+import moment from "moment"
+
 
 import Jumbotron from "react-bootstrap/Jumbotron";
 import Row from "react-bootstrap/Row";
@@ -24,7 +26,7 @@ function SearchForm(){
 		// debuggerr;
 		// console.log("This is the response")
 		// console.log(collection);
-		// console.log("This is search searchQuery " + JSON.stringify(searchQuery));
+		console.log("This is search searchQuery " + JSON.stringify(searchQuery));
 		// console.log('last id '+ lastDocID)
 		
 		// debugger;
@@ -66,12 +68,19 @@ function SearchForm(){
 		}
 	}
 
+	function parseDate(date){;
+		return moment(date).format('MM-DD-YYYY')
+	}
+
 	function submitForm(){
 		if(Object.keys(searchQuery).length > 0){
+
 			axios.get("http://localhost:8080/search",{
 				params: {
-					post_status: JSON.stringify(searchQuery.post_types)	
-				} 
+					post_status: 	JSON.stringify(searchQuery.post_types),
+					post_time: 		parseDate(searchQuery.post_date),
+					description:    searchQuery.post_descripton
+				} 	
 				})
 				.then(response => {
 					// debugger;
@@ -86,6 +95,10 @@ function SearchForm(){
 				});
 		}
 		
+	}
+
+	function refresh(){
+		window.location.reload();
 	}
 
 	function fetchMore(){
@@ -143,8 +156,13 @@ function SearchForm(){
 					
 				</form>
 				<Row>
-					<Col md={{ span: 4, offset: 10 }}>
-						<Button onClick={submitForm}variant="info">Search</Button>
+					<Col md={{ span:1 , offset: 9 }}>
+						<Button onClick={submitForm} variant="info">Search</Button>
+
+					</Col>
+					<Col md={{ span:1 }}>
+						<Button onClick={refresh} variant="danger">Reset</Button>
+
 					</Col>
 					
 				</Row>
