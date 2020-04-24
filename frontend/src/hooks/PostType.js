@@ -2,10 +2,8 @@ import React, {useState, useEffect} from "react";
 import axios from 'axios';
 
 function PostType({postType}){
-	const postTypeList = {"": "Choose a value type", "valid": "Valid", "invalid": "In-valid", "expired": "Expired"}
 	const [statuses, setStatuses] = useState(null);
 	useEffect(() =>{
-		// setNewTodo(list)
 		axios.get("http://localhost:8080/post_status_types")
 			.then(response => {
 				let statusObj = {"": "Chose a status type"};
@@ -13,11 +11,8 @@ function PostType({postType}){
 					statusObj[status] = status;
 				}
 				setStatuses(statusObj)
-				// setResponse(response.data);
-				console.log(response);
 			})
 			.catch(error => {
-				// setErroronApi(true)
 				
 				console.log(error);
 			});
