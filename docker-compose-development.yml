@@ -13,7 +13,7 @@ services:
     tty: true
     command: bash -c "python /app/app.py"
     env_file:
-      - ./.env
+      - ./backend/.env.development.local
   frontend:
     build:
       context: ./frontend
@@ -24,7 +24,10 @@ services:
     volumes:
       - ./frontend:/app
       - /app/node_modules
-    environment:
-      - NODE_ENV=development
+    env_file:
+      - ./frontend/.env.development.local
+    # environment:
+    #   - NODE_ENV=development
+      
     depends_on:
       - 'backend'

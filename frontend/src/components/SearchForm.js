@@ -20,8 +20,8 @@ function SearchForm(){
 	const [collection, setCollection] 			= useState(null);
 	const [lastDocID, setLastDocID] 			= useState(null);
 	const [errorAPImsg, setErrorAPImsg] 		= useState(null);
-	const apiEndpoint = "http://localhost:8080/search"
-	const [loadingSearchBtn, setLoadingSearchBtn] 		= useState(false);
+	// const apiEndpoint 							= {process.env.REACT_APP_API_ENDPOINT}
+	const [loadingSearchBtn, setLoadingSearchBtn] = useState(false);
 
 	const InitialLoading = () => {
 		if(initialLoading){
@@ -31,6 +31,8 @@ function SearchForm(){
 		}
 		
 	}
+
+	const apiEndpoint = () => process.env.REACT_APP_API_ENDPOINT;
 
 	useEffect(()=>{
 		if (Object.keys(searchQuery).length === 0){
@@ -53,7 +55,6 @@ function SearchForm(){
 
 	function updatePostString(string){
 		if (string.length > 0){
-
 			setSearchQuery({...searchQuery, post_descripton: string})
 		}
 	}
@@ -75,7 +76,7 @@ function SearchForm(){
 		
 		if(Object.keys(searchQuery).length > 0){
 			setLoadingSearchBtn(true);
-			axios.get(apiEndpoint,{
+			axios.get(apiEndpoint(),{
 				params: {
 					post_status: 	JSON.stringify(searchQuery.post_types),
 					post_time: 		parseDate(searchQuery.post_date),
@@ -110,7 +111,7 @@ function SearchForm(){
 
 	function fetchMore(){
 		setLoadingSearchBtn(true);
-		axios.get(apiEndpoint, {
+		axios.get(apiEndpoint(), {
 			params: {
 					last_doc_id: 	lastDocID,
 					post_status: 	JSON.stringify(searchQuery.post_types),
@@ -134,7 +135,7 @@ function SearchForm(){
 
 	useEffect(() =>{
 		setInitialLoading(true);
-		axios.get(apiEndpoint, {
+		axios.get(apiEndpoint(), {
 			})
 			.then(response => {
 				setCollection(response.data.data);
