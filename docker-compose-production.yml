@@ -11,7 +11,7 @@ services:
       - ./backend/app:/app
     command: bash -c "supervisord -n"
     env_file:
-      - ./.env
+      - ./backend/.env.development.local
   frontend:
     build:
       context: ./frontend
@@ -22,7 +22,7 @@ services:
     volumes:
       - ./frontend:/app
       - /app/node_modules
-    environment:
-      - NODE_ENV=production
+    env_file:
+      - ./frontend/.env.production.local
     depends_on:
       - 'backend'
