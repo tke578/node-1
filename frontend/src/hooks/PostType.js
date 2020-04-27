@@ -4,7 +4,7 @@ import axios from 'axios';
 function PostType({postType}){
 	const [statuses, setStatuses] = useState(null);
 	useEffect(() =>{
-		axios.get("http://localhost:8080/post_status_types")
+		axios.get(apiEndpoint()+"/post_status_types")
 			.then(response => {
 				let statusObj = {"": "Chose a status type"};
 				for (const status of response.data.statuses){
@@ -19,6 +19,8 @@ function PostType({postType}){
 
 		// console.log("This is new todo "+ newTodo);
 	}, []);
+
+	const apiEndpoint = () => process.env.REACT_APP_API_ENDPOINT;
 	
 	// postStatuses();
 	// OLD

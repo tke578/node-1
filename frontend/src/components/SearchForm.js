@@ -32,7 +32,7 @@ function SearchForm(){
 		
 	}
 
-	const apiEndpoint = () => process.env.REACT_APP_API_ENDPOINT;
+	const apiEndpoint = () => process.env.REACT_APP_API_ENDPOINT +'/search';
 
 	useEffect(()=>{
 		if (Object.keys(searchQuery).length === 0){
