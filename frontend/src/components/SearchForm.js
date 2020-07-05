@@ -20,6 +20,7 @@ function SearchForm(){
 	const [collection, setCollection] 			= useState(null);
 	const [lastDocID, setLastDocID] 			= useState(null);
 	const [errorAPImsg, setErrorAPImsg] 		= useState(null);
+	const [searchResults, setSearchResults]     = useState(true);
 	// const apiEndpoint 							= {process.env.REACT_APP_API_ENDPOINT}
 	const [loadingSearchBtn, setLoadingSearchBtn] = useState(false);
 
@@ -88,9 +89,11 @@ function SearchForm(){
 						setCollection(response.data.data);
 						getLastDocID(response.data.data)
 						setLoadingSearchBtn(false);
+						setSearchResults(true)
 					}else{
 						setCollection(null);
 						setLoadingSearchBtn(false);
+						setSearchResults(false)
 					}
 
 					
@@ -185,7 +188,7 @@ function SearchForm(){
 					}
 					</Button>
 				]
-				: null
+				: searchResults ? null : <i>No search results.</i>
 			}	
 		</div>
 	);

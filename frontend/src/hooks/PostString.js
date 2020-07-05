@@ -10,7 +10,6 @@ function PostString({postString}) {
 				<input type="text" 
 					onChange={(e) => {
 							postString(e.target.value)
-							// debugger;
 						}
 					}
 				/>
